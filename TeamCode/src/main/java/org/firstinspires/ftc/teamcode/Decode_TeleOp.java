@@ -102,17 +102,20 @@ public class DecodeTeleOp extends LinearOpMode {
         leftFrontDrive.setVelocity(velLF);
         rightFrontDrive.setVelocity(velRF);
 
-        telemetry.addData("MaxRaw", "%.3f", maxRaw);
-        telemetry.addData("AvgAbs", "%.3f", avgAbs);
+        // Send important values to telemetry
         telemetry.addData("Scale", "%.3f", scale);
+        telemetry.addData("LB Intended Velocity", velLB);
+        telemetry.addData("RB Intended Velocity", velRB);
+        telemetry.addData("LF Intended Velocity", velLF);
+        telemetry.addData("RF Intended Velocity", velRF);
+        telemetry.addLine("Drive Mode: " + 
+            ((gamepad1.left_stick_button || gamepad1.right_stick_button) ? "FAST (2800)" : "SLOW (1050)"));
     }
     
     private void intake() {
         double intakePower = -gamepad2.left_stick_y;
         intakeMotor.setPower(intakePower);
-
         telemetry.addData("Intake Power", intakePower);
-        telemetry.update();
     }
     
     private void transfer() {
@@ -123,6 +126,7 @@ public class DecodeTeleOp extends LinearOpMode {
         }
         
         transferMotor.setPower(startingTransferSpeed + gamepad2.left_trigger);
+        telemetry.addData("Transfer Power", transferMotor.getPower());
     }
     
     private void shoot() {
@@ -142,8 +146,6 @@ public class DecodeTeleOp extends LinearOpMode {
         long loopTime = System.currentTimeMillis() - previousLoopEnd;
         previousLoopEnd = System.currentTimeMillis();
         telemetry.addLine("Loop Time = " + loopTime + " ms");
-        telemetry.addLine("Drive Mode: " + 
-            ((gamepad1.left_stick_button || gamepad1.right_stick_button) ? "FAST (2800)" : "SLOW (1050)"));
         telemetry.update();
     }
 }
